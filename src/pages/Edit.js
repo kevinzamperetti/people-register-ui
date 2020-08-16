@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import NumberFormat from 'react-number-format';
 
@@ -75,12 +74,10 @@ export default class Insert extends React.Component {
             dateBirth: dateBirth,
             naturalFrom: naturalFrom,
             nationality: nationality,
-            cpf: cpf.replace(/[^\d]/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+            cpf: cpf.replace(/[^\d]/g, "")
         }, header ).then( response => {
             toast.success(this.util.contentSuccess());
-            document.getElementById("form-opportunity").reset();
-        // this.props.history.push("/pages/key-word")
-            // console.log( response.data )
+            document.getElementById("form-edit").reset();
         } )
         .catch( error => {
             toast.error(this.util.contentError(error.response.data.message));
@@ -97,7 +94,7 @@ export default class Insert extends React.Component {
             <Typography component="h1" variant="h6" align={"center"} style={{margin: '20px'}} >
               Alterar Cadastro de Pessoa
             </Typography>
-            <form id="form-opportunity" onBlur={ this.changeValuesState.bind( this ) }> {/* noValidate */}
+            <form id="form-edit" onBlur={ this.changeValuesState.bind( this ) }>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -186,8 +183,7 @@ export default class Insert extends React.Component {
                     label="CPF"
                     name="cpf"
                     autoComplete="cpf"
-                    mask="000.000.000-00"
-                    value={cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")} 
+                    value={cpf} 
                     onChange={ this.changeValuesState.bind( this ) }
                   />
                 </Grid>

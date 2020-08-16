@@ -39,7 +39,6 @@ export default class Home extends React.Component {
   signIn(evt) {
     evt.preventDefault();
     const { user, password, authorization } = this.state
-    console.log( user, password )
     this.setState( { authorization: "Basic " + btoa(user + ":" + password) }  )
     localStorage.setItem( 'Authorization' , authorization )
   }

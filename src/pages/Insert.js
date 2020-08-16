@@ -22,7 +22,6 @@ export default class Insert extends React.Component {
     this.state = {
       authorization: "Basic " + btoa("admin" + ":" + "admin")
     }
-    // this.trocaValoresState = this.trocaValoresState.bind( this )
   }
 
   changeValuesState( evt ) {
@@ -37,7 +36,6 @@ export default class Insert extends React.Component {
     const header = { headers: {Authorization: localStorage.getItem('Authorization') } }
     const { name, gender, email, dateBirth, naturalFrom, nationality, cpf } = this.state
     const dateBirthFormatted = moment(dateBirth).format("DD/MM/YYYY");
-    console.log(dateBirthFormatted)
     api.post( '/api/v1/person', {
             name: name,
             gender: gender == '' ? 'N' : gender,
@@ -45,12 +43,10 @@ export default class Insert extends React.Component {
             dateBirth: dateBirthFormatted,
             naturalFrom: naturalFrom,
             nationality: nationality,
-            cpf: cpf.replace(/[^\d]/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
+            cpf: cpf.replace(/[^\d]/g, "")
         }, header ).then( response => {
             toast.success(this.util.contentSuccess());
-            document.getElementById("form-opportunity").reset();
-        // this.props.history.push("/pages/key-word")
-            // console.log( response.data )
+            document.getElementById("form-insert").reset();
         } )
         .catch( error => {
             toast.error(this.util.contentError(error.response.data.message));
@@ -67,7 +63,7 @@ export default class Insert extends React.Component {
             <Typography component="h1" variant="h6" align={"center"} style={{margin: '20px'}} >
               Cadastrar Pessoa
             </Typography>
-            <form id="form-opportunity" onBlur={ this.changeValuesState.bind( this ) }> {/* noValidate */}
+            <form id="form-insert" onBlur={ this.changeValuesState.bind( this ) }> {/* noValidate */}
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -145,6 +141,7 @@ export default class Insert extends React.Component {
                     label="CPF"
                     name="cpf"
                     autoComplete="cpf"
+                    onChange={ this.changeValuesState.bind( this ) }
                   />
                 </Grid>
               </Grid>
