@@ -40,12 +40,12 @@ export default class Insert extends React.Component {
     console.log(dateBirthFormatted)
     api.post( '/api/v1/person', {
             name: name,
-            gender: gender,
+            gender: gender == '' ? 'N' : gender,
             email: email,
             dateBirth: dateBirthFormatted,
             naturalFrom: naturalFrom,
             nationality: nationality,
-            cpf: cpf
+            cpf: cpf.replace(/[^\d]/g, "").replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4")
         }, header ).then( response => {
             toast.success(this.util.contentSuccess());
             document.getElementById("form-opportunity").reset();

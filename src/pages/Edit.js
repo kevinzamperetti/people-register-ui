@@ -70,7 +70,7 @@ export default class Insert extends React.Component {
     api.put( `/api/v1/person/${id}`, {
             id: id,
             name: name,
-            gender: gender,
+            gender: gender == '' ? 'N' : gender,
             email: email,
             dateBirth: dateBirth,
             naturalFrom: naturalFrom,
