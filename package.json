@@ -24,7 +24,7 @@
     "react-input-mask": "^2.0.4",
     "react-number-format": "^4.4.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "latest",
+    "react-scripts": "3.4.0",
     "react-toastify": "^6.0.8",
     "reactstrap": "^8.5.1"
   },
