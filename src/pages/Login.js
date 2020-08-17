@@ -19,9 +19,9 @@ export default class Login extends React.Component {
     super( props )
     this.util = new Util();
     this.state = {
-      user : 'admin',
-      password : 'admin',
-      authorization: "Basic " + btoa("admin" + ":" + "admin"),
+      user : '',
+      password : '',
+      authorization: '',
       urlBackEnd: [],
       urlFrontEnd: [],
       columns:["Back-End", "Front-End"],
@@ -29,12 +29,21 @@ export default class Login extends React.Component {
     }
   }
 
+  changeValuesState( evt ) {
+    const { name, value } = evt.target
+		this.setState( {
+			[name]: value
+    } )
+  }
+
   signIn(evt) {
     evt.preventDefault();
     const { user, password, authorization } = this.state
     console.log( user, password )
     this.setState( { authorization: "Basic " + btoa(user + ":" + password) }  )
-    localStorage.setItem( 'Authorization' , authorization )
+    if (user === 'admin' && password === 'admin') {
+      localStorage.setItem( 'Authorization' , "Basic " + btoa( user + ":" + password ) )
+    }
     this.props.history.push("/home")
   }
 
@@ -63,11 +72,11 @@ export default class Login extends React.Component {
           <form noValidate autoComplete="off">
             <FormControl style={{margin: '30px 10px'}}>
               <InputLabel htmlFor="user">Usuário</InputLabel>
-              <Input id="user" value={user} readOnly />
+              <Input id="user" name="user" value={user} onChange={ this.changeValuesState.bind( this ) }/>
             </FormControl>
             <FormControl style={{margin: '30px 10px'}}>
               <InputLabel htmlFor="password">Senha</InputLabel>
-              <Input id="password" value={password} readOnly />
+              <Input type="password" name="password" id="password" value={password} onChange={ this.changeValuesState.bind( this ) }/>
             </FormControl>
             <Button style={{margin: '30px 10px'}} variant="contained"
                     color="primary" onClick={this.signIn.bind(this)}>
@@ -81,7 +90,6 @@ export default class Login extends React.Component {
           </Container>
           <Container>
             <MUIDataTable
-              title={"Pessoas"}
               data={data}
               columns={columns}
               options={options}

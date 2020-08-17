@@ -4,11 +4,10 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MUIDataTable from "mui-datatables";
 import moment from 'moment';
 
 import Util from '../Util/Util';
@@ -20,7 +19,17 @@ export default class Insert extends React.Component {
     super( props )
     this.util = new Util();
     this.state = {
-      authorization: "Basic " + btoa("admin" + ":" + "admin")
+      authorization: "Basic " + btoa("admin" + ":" + "admin"),
+      currencies: [
+        {
+          value: 'M',
+          label: 'Masculino',
+        },
+        {
+          value: 'F',
+          label: 'Feminino',
+        }
+      ]
     }
   }
 
@@ -43,10 +52,10 @@ export default class Insert extends React.Component {
             dateBirth: dateBirthFormatted,
             naturalFrom: naturalFrom,
             nationality: nationality,
-            cpf: cpf.replace(/[^\d]/g, "")
+            cpf: cpf == null ? "" : cpf.replace(/[^\d]/g, "")
         }, header ).then( response => {
             toast.success(this.util.contentSuccess());
-            document.getElementById("form-insert").reset();
+            this.props.history.push('/home')
         } )
         .catch( error => {
             toast.error(this.util.contentError(error.response.data.message));
@@ -54,7 +63,7 @@ export default class Insert extends React.Component {
   }
 
   render() {
-    const { cpf } = this.state
+    const { cpf, currencies } = this.state
     return (
       <React.Fragment>
         <Container component="main" maxWidth="xs">
@@ -97,7 +106,15 @@ export default class Insert extends React.Component {
                     label="Gênero"
                     name="gender"
                     autoComplete="gender"
-                  />
+                    select
+                    label="Select"
+                  >
+                    {currencies.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -140,6 +157,9 @@ export default class Insert extends React.Component {
                     id="cpf"
                     label="CPF"
                     name="cpf"
+                    inputProps={{
+                      maxLength: 11,
+                    }}
                     autoComplete="cpf"
                     onChange={ this.changeValuesState.bind( this ) }
                   />
