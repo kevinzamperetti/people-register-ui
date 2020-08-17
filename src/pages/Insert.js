@@ -44,7 +44,7 @@ export default class Insert extends React.Component {
     evt.preventDefault();
     const header = { headers: {Authorization: localStorage.getItem('Authorization') } }
     const { name, gender, email, dateBirth, naturalFrom, nationality, cpf } = this.state
-    const dateBirthFormatted = moment(dateBirth).format("DD/MM/YYYY");
+    const dateBirthFormatted = dateBirth == null ? '' : moment(dateBirth).format("DD/MM/YYYY");
     api.post( '/api/v1/person', {
             name: name,
             gender: gender == '' ? 'N' : gender,
